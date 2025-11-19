@@ -130,9 +130,11 @@
             </div>
 
             <div id="screen-auth" class="hidden-screen h-full p-6 items-center justify-center text-center">
+                <button onclick="goToScreen('speed-select')" class="absolute top-4 left-4 text-green-400 hover:text-white flex items-center gap-2 transition-colors z-10">
+                    <i data-lucide="arrow-left"></i> Voltar
+                </button>
                 <div class="bg-glass-green p-8 rounded-3xl w-full max-w-xs relative overflow-hidden border border-green-500/30">
                     <div class="absolute top-0 left-0 w-full h-1 bg-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.8)] animate-[scan_2s_infinite_linear]"></div>
-                    
                     <i data-lucide="credit-card" class="w-20 h-20 text-white mx-auto mb-6 opacity-80"></i>
                     <h2 class="text-xl font-bold text-white mb-2">Autenticação</h2>
                     <p class="text-green-200/70 text-sm mb-8">Aproxime seu cartão RFID ou use o App.</p>
@@ -337,3 +339,4 @@
 </body>
 
 </html>
+
