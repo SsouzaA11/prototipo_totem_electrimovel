@@ -1,0 +1,88 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #021c10; 
+    color: #e2e8f0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.kiosk-frame {
+    width: 100%;
+    height: 100%;
+    max-width: 480px;
+    max-height: 850px;
+    background: #064e3b; 
+    background: linear-gradient(to bottom, #064e3b, #022c22);
+    border: 8px solid #14532d; 
+    border-radius: 30px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 50px rgba(34, 197, 94, 0.15); 
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+    .kiosk-frame {
+        height: 90vh;
+    }
+}
+
+.digital-font {
+    font-family: 'Orbitron', sans-serif;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #022c22;
+}
+::-webkit-scrollbar-thumb {
+    background: #15803d;
+    border-radius: 3px;
+}
+
+.hidden-screen {
+    display: none;
+}
+
+.active-screen {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scan {
+    0% { top: 0; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+}
+
+.progress-bar-striped {
+    background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+    background-size: 1rem 1rem;
+}
+
+.bg-glass-green {
+    background-color: rgba(6, 78, 59, 0.4);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.bg-glass-premium {
+    background: linear-gradient(135deg, rgba(234, 88, 12, 0.15) 0%, rgba(6, 78, 59, 0.6) 100%);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(249, 115, 22, 0.4);
+    box-shadow: 0 4px 30px rgba(234, 88, 12, 0.1);
+}

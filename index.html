@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrimóvel - Estação de Recarga</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="kiosk-frame">
+        <div class="bg-green-950 p-4 flex justify-between items-center border-b border-green-900 z-10">
+            <div class="flex items-center gap-2">
+                <span class="font-bold tracking-wider text-white">ELECTRIMÓVEL</span>
+            </div>
+            <div class="flex items-center gap-3 text-green-100 text-sm">
+                <span id="clock">12:00</span>
+                <i data-lucide="wifi" class="w-4 h-4"></i>
+                <div class="flex items-center gap-1 bg-green-900 px-2 py-0.5 rounded text-xs border border-green-700">
+                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                    GRID ON
+                </div>
+            </div>
+        </div>
+
+        <div id="app-container" class="flex-1 relative bg-gradient-to-b from-green-950 to-black overflow-hidden">
+            <div id="screen-welcome" class="active-screen items-center justify-center h-full p-6 text-center relative">
+                <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 pointer-events-none">
+                    <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-green-600 rounded-full blur-3xl"></div>
+                    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-orange-600 rounded-full blur-3xl"></div>
+                </div>
+
+                <div class="z-10 flex flex-col items-center gap-8">
+                    <div class="bg-glass-green p-8 rounded-full shadow-2xl mb-4 relative group border-2 border-green-500/30">
+                        <i data-lucide="plug-zap" class="w-24 h-24 text-green-400"></i>
+                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-green-900 px-3 py-1 rounded text-[10px] text-green-100 border border-green-600 whitespace-nowrap">
+                            Padrão CCS2
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h1 class="text-4xl font-bold text-white mb-2">Bem-vindo</h1>
+                        <p class="text-green-200 text-lg">Conecte o cabo e inicie</p>
+                    </div>
+
+                    <button onclick="goToScreen('speed-select')" class="mt-8 px-12 py-5 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white font-bold rounded-full text-xl transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(34,197,94,0.4)] flex items-center gap-3 border border-green-400/50">
+                        <i data-lucide="power"></i>
+                        Iniciar Recarga
+                    </button>
+                </div>
+
+                <div class="absolute bottom-6 text-xs text-green-600/70">
+                    ID da Estação: #BR-BA-0042 (Totem 01)
+                </div>
+            </div>
+
+            <div id="screen-speed-select" class="hidden-screen h-full p-6 flex-col">
+                <div class="mb-4">
+                    <button onclick="goToScreen('welcome')" class="text-green-400 hover:text-white flex items-center gap-2 mb-2 transition-colors">
+                        <i data-lucide="arrow-left"></i> Voltar
+                    </button>
+                    <h2 class="text-2xl font-bold text-white">Escolha a Velocidade</h2>
+                    <p class="text-green-200/70 text-sm">A potência real depende da rede.</p>
+                </div>
+
+                <div class="flex-1 flex flex-col gap-3 overflow-y-auto pb-4">
+                    <button onclick="selectSpeed('eco')" class="group relative bg-glass-green hover:bg-green-900/80 rounded-2xl p-5 text-left transition-all">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-green-400 font-bold text-lg flex items-center gap-2">
+                                    <i data-lucide="leaf" class="w-5 h-5"></i> ECO
+                                </span>
+                                <p class="text-white text-sm mt-1">Carregamento Constante</p>
+                                <p class="text-green-300/60 text-xs mt-1">Independente da rede.</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="block text-2xl font-bold text-white digital-font">22 kW</span>
+                                <span class="text-xs text-green-400">R$ 1,45 / kWh</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button onclick="selectSpeed('standard')" class="group relative bg-glass-green hover:bg-cyan-900/30 rounded-2xl p-5 text-left transition-all border border-cyan-500/20 hover:border-cyan-500/50">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-cyan-200 font-bold text-lg flex items-center gap-2">
+                                    <i data-lucide="battery-charging" class="w-6 h-6"></i>
+                                    RÁPIDA
+                                </span>
+                                <p class="text-white text-sm mt-1">Até 33kW*</p>
+                                <p class="text-cyan-200/40 text-xs mt-1">Usa 1 auxiliar livre se houver.</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="block text-2xl font-bold text-white digital-font">33 kW</span>
+                                <span class="text-xs text-cyan-400">R$ 1,65 / kWh</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button onclick="selectSpeed('ultra')" class="group relative bg-glass-premium rounded-2xl p-6 text-left transition-all shadow-xl">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-orange-400 font-bold text-xl flex items-center gap-2">
+                                    <i data-lucide="zap" class="w-6 h-6 fill-orange-500 text-orange-500"></i>
+                                    ULTRA RÁPIDA
+                                </span>
+                                <p class="text-white text-sm mt-1">Até 66kW*</p>
+                                <p class="text-orange-200/60 text-xs mt-1 leading-tight">
+                                    Usa 2 auxiliares livres.
+                                </p>
+                            </div>
+                            <div class="text-right flex flex-col justify-center">
+                                <span class="block text-2xl font-bold text-white digital-font tracking-wider">66 kW</span>
+                                <span class="text-xs text-orange-400 font-bold mt-1">R$ 1,85 / kWh</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <div class="mt-2 border-t border-green-800/50 pt-4">
+                        <h3 class="text-green-400 text-[10px] uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <i data-lucide="network" class="w-3 h-3"></i>
+                            Situação Atual da Rede
+                        </h3>
+                        <div id="selection-network-status" class="flex flex-col gap-2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="screen-auth" class="hidden-screen h-full p-6 items-center justify-center text-center">
+                <div class="bg-glass-green p-8 rounded-3xl w-full max-w-xs relative overflow-hidden border border-green-500/30">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.8)] animate-[scan_2s_infinite_linear]"></div>
+                    
+                    <i data-lucide="credit-card" class="w-20 h-20 text-white mx-auto mb-6 opacity-80"></i>
+                    <h2 class="text-xl font-bold text-white mb-2">Autenticação</h2>
+                    <p class="text-green-200/70 text-sm mb-8">Aproxime seu cartão RFID ou use o App.</p>
+
+                    <div class="mb-8">
+                        <p class="text-xs text-green-400 uppercase tracking-wider mb-1">Modo Solicitado</p>
+                        <p id="auth-mode-display" class="text-white font-bold text-lg">ULTRA RÁPIDA</p>
+                    </div>
+
+                    <div id="auth-status" class="hidden mb-4 text-green-400 font-bold flex items-center justify-center gap-2">
+                        <i data-lucide="check-circle"></i> Autorizado!
+                    </div>
+
+                    <button onclick="simulateAuth()" id="btn-auth" class="w-full py-3 bg-orange-600 hover:bg-orange-500 text-white rounded-xl font-semibold transition-colors shadow-lg border border-orange-400/30">
+                        Simular Pagamento
+                    </button>
+                </div>
+            </div>
+
+            <div id="screen-charging" class="hidden-screen h-full p-6 relative overflow-y-auto">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <p class="text-green-400/70 text-xs uppercase tracking-wider">Status</p>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
+                            <span class="font-bold text-white">Carregando</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-green-400/70 text-xs uppercase tracking-wider">Conector</p>
+                        <span class="font-bold text-white">CCS2</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-center mb-6 relative">
+                    <svg class="w-64 h-64 transform -rotate-90">
+                        <circle cx="128" cy="128" r="120" stroke="#064e3b" stroke-width="12" fill="transparent" />
+                        <circle id="progress-ring" cx="128" cy="128" r="120" stroke="#22c55e" stroke-width="12" fill="transparent" stroke-dasharray="753" stroke-dashoffset="753" stroke-linecap="round" class="transition-[stroke-dashoffset] duration-500" />
+                    </svg>
+                    
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                        <span id="battery-percent" class="digital-font text-5xl font-bold text-white">0%</span>
+                        <span id="charging-speed-label" class="text-orange-400 text-xs font-bold uppercase tracking-widest mt-2 border border-orange-500/30 px-2 py-0.5 rounded bg-orange-500/10">Ultra</span>
+                        <div class="text-center mt-2">
+                             <span id="time-remaining" class="block text-white text-md font-bold digital-font">-- min restantes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="smart-boost" class="bg-glass-green rounded-lg p-4 mb-6 transition-all duration-500">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-xs font-bold text-white uppercase flex items-center gap-2">
+                            <i data-lucide="network" class="w-4 h-4 text-orange-400"></i> Monitor de Rede
+                        </h3>
+                        <span id="tariff-badge" class="text-[10px] bg-green-900 px-2 py-1 rounded text-green-200 border border-green-700">...</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-6 h-6 rounded bg-green-900 flex items-center justify-center text-[10px] font-bold text-green-400 border border-green-700">02</div>
+                            <div class="flex-1">
+                                <div class="flex justify-between text-[10px] mb-1">
+                                    <span id="st2-status-text" class="text-orange-400">Ocupado</span>
+                                    <span id="st2-percent" class="text-white">94%</span>
+                                </div>
+                                <div class="w-full bg-green-900 h-1.5 rounded-full">
+                                    <div id="st2-bar" class="bg-orange-500 h-full rounded-full w-[94%] transition-all duration-1000"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-6 h-6 rounded bg-green-900 flex items-center justify-center text-[10px] font-bold text-green-400 border border-green-700">03</div>
+                            <div class="flex-1">
+                                <div class="flex justify-between text-[10px] mb-1">
+                                    <span id="st3-status-text" class="text-orange-400">Ocupado</span>
+                                    <span id="st3-percent" class="text-white">90%</span>
+                                </div>
+                                <div class="w-full bg-green-900 h-1.5 rounded-full">
+                                    <div id="st3-bar" class="bg-orange-500 h-full rounded-full w-[90%] transition-all duration-1000"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="boost-active-alert" class="mt-3 hidden p-2 bg-green-800/50 border border-green-500/50 rounded flex items-center gap-2 animate-pulse">
+                        <i data-lucide="zap" class="w-4 h-4 text-orange-400 fill-orange-400"></i>
+                        <p class="text-[10px] text-white font-bold">Alert msg</p>
+                    </div>
+                    
+                    <div id="traffic-alert" class="mt-3 hidden p-2 bg-orange-900/50 border border-orange-500/50 rounded flex items-center gap-2 animate-pulse">
+                        <i data-lucide="car-front" class="w-4 h-4 text-white"></i>
+                        <p class="text-[10px] text-white font-bold">Alert msg</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <div class="bg-green-900/40 border border-green-800 rounded-xl p-3">
+                        <p class="text-green-400 text-[10px] mb-1 uppercase font-bold">Potência Real</p>
+                        <div class="flex items-baseline gap-1">
+                            <p id="power-kw" class="text-xl font-bold text-white digital-font">0.0</p>
+                            <span class="text-xs font-normal text-green-300">kW</span>
+                        </div>
+                    </div>
+                    <div class="bg-green-900/40 border border-green-800 rounded-xl p-3">
+                        <p class="text-green-400 text-[10px] mb-1 uppercase font-bold">Energia Entregue</p>
+                        <div class="flex items-baseline gap-1">
+                            <p id="energy-kwh" class="text-xl font-bold text-white digital-font">0.0</p>
+                            <span class="text-xs font-normal text-green-300">kWh</span>
+                        </div>
+                    </div>
+                    <div class="bg-green-900/40 border border-green-800 rounded-xl p-3">
+                        <p class="text-green-400 text-[10px] mb-1 uppercase font-bold">Tempo</p>
+                        <div class="flex items-baseline gap-1">
+                            <p id="time-elapsed" class="text-xl font-bold text-white digital-font">00:00</p>
+                            <span class="text-xs font-normal text-green-300">mm:ss</span>
+                        </div>
+                    </div>
+                    <div class="bg-green-900/40 border border-green-500/30 rounded-xl p-3">
+                        <p class="text-green-400 text-[10px] mb-1 uppercase font-bold">Custo Atual</p>
+                        <div class="flex items-baseline gap-1">
+                            <p id="current-cost" class="text-xl font-bold text-orange-400 digital-font">R$ 0,00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-3 pb-4">
+                    <button onclick="stopCharging()" class="w-full py-3 bg-red-900/50 hover:bg-red-800 text-white border border-red-700 rounded-xl font-bold transition-all text-sm">
+                        Encerrar Carregamento
+                    </button>
+                    
+                    <button onclick="simulateDisconnect()" class="group w-full py-3 bg-orange-900/30 hover:bg-orange-700 text-orange-300 hover:text-white border border-orange-600/50 rounded-xl font-bold transition-all text-sm flex items-center justify-center gap-2">
+                        <i data-lucide="unlink" class="w-4 h-4"></i>
+                        Simular Desconectar Cabo
+                    </button>
+                </div>
+                
+                <div id="disconnect-alert" class="hidden absolute inset-0 bg-black/90 z-50 flex flex-col items-center justify-center backdrop-blur-sm">
+                    <div class="bg-red-900/40 p-6 rounded-full mb-4 border border-red-500 animate-bounce">
+                        <i data-lucide="unlink" class="w-12 h-12 text-red-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Cabo Desconectado!</h3>
+                </div>
+            </div>
+
+            <div id="screen-summary" class="hidden-screen h-full p-6 flex-col items-center justify-center">
+                <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(34,197,94,0.5)]">
+                    <i data-lucide="check" class="text-white w-8 h-8 stroke-[4]"></i>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-white mb-1">Carga Finalizada</h2>
+                <p class="text-green-200/70 text-sm mb-8">Obrigado por usar Electrimóvel</p>
+
+                <div class="w-full bg-glass-green rounded-2xl p-6 mb-6 border border-green-800">
+                    <div class="flex justify-between mb-4 pb-4 border-b border-green-800">
+                        <span class="text-green-200">Energia Total</span>
+                        <span id="final-kwh" class="text-white font-bold">0 kWh</span>
+                    </div>
+                    <div class="flex justify-between mb-4 pb-4 border-b border-green-800">
+                        <span class="text-green-200">Tempo Total</span>
+                        <span id="final-time" class="text-white font-bold">00:00</span>
+                    </div>
+                    
+                    <div class="bg-green-900/50 rounded-lg p-3 mb-4">
+                        <p class="text-[10px] text-green-400 uppercase tracking-wider mb-2">Detalhes de Consumo (Custo | Tempo)</p>
+                        <div class="flex justify-between text-xs text-green-200/70 mb-1">
+                            <span>22 kW (R$ 1,45)</span>
+                            <span class="text-white"><span id="cost-22">R$ 0,00</span> <span class="text-green-500 text-[10px]">| <span id="time-22">00:00</span></span></span>
+                        </div>
+                        <div class="flex justify-between text-xs text-green-200/70 mb-1">
+                            <span>33 kW (R$ 1,65)</span>
+                            <span class="text-white"><span id="cost-33">R$ 0,00</span> <span class="text-green-500 text-[10px]">| <span id="time-33">00:00</span></span></span>
+                        </div>
+                        <div class="flex justify-between text-xs text-green-200/70">
+                            <span>66 kW (R$ 1,85)</span>
+                            <span class="text-white"><span id="cost-66">R$ 0,00</span> <span class="text-green-500 text-[10px]">| <span id="time-66">00:00</span></span></span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-2 border-t border-green-800">
+                        <span class="text-green-200">Total a Pagar</span>
+                        <span id="final-cost" class="text-3xl font-bold text-orange-400">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <button onclick="resetApp()" class="w-full py-4 bg-green-700 hover:bg-green-600 text-white rounded-xl font-bold transition-colors border border-green-500">
+                    Nova Recarga
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-green-950 p-4 text-center border-t border-green-900">
+            <p class="text-[10px] text-green-500 uppercase tracking-widest mb-1">Idealização</p>
+            <div class="flex justify-center gap-4 items-center opacity-70 grayscale hover:grayscale-0 transition-all">
+                <span class="font-bold text-yellow-500 text-sm">BR PETROBRAS</span>
+                <span class="text-green-600">|</span>
+                <span class="font-bold text-blue-500 text-sm">SENAI</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
