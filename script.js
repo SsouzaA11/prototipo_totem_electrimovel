@@ -2,9 +2,9 @@ lucide.createIcons();
 
 const SIMULATED_SECONDS_PER_TICK = 12; 
 const VEHICLE_CAPACITY_KWH = 60;
-const PRICE_22 = 1.45;
-const PRICE_33 = 1.65;
-const PRICE_66 = 1.85;
+const PRICE_22 = 1.90;
+const PRICE_33 = 2.10;
+const PRICE_66 = 2.50;
 
 let currentScreen = 'welcome';
 let batteryLevel = 15; 
@@ -200,38 +200,38 @@ function startChargingSimulation() {
 
         let freeNeighbors = (!networkState.st2.active ? 1 : 0) + (!networkState.st3.active ? 1 : 0);
         
-        let currentPower = 22; 
+        let currentPower = 20; 
         let currentPrice = PRICE_22; 
 
         if (selectedSpeedMode === 'eco') {
-            currentPower = 22;
+            currentPower = 20;
             currentPrice = PRICE_22;
         } 
         else if (selectedSpeedMode === 'standard') {
             if (freeNeighbors >= 1) {
-                currentPower = 33;
+                currentPower = 40;
                 currentPrice = PRICE_33;
             } else {
-                currentPower = 22;
+                currentPower = 20;
                 currentPrice = PRICE_22;
             }
         }
         else if (selectedSpeedMode === 'ultra') {
             if (freeNeighbors >= 2) {
-                currentPower = 66;
+                currentPower = 60;
                 currentPrice = PRICE_66;
             } else if (freeNeighbors === 1) {
-                currentPower = 33;
+                currentPower = 40;
                 currentPrice = PRICE_33;
             } else {
-                currentPower = 22;
+                currentPower = 20;
                 currentPrice = PRICE_22;
             }
         }
 
         const tariffBadge = document.getElementById('tariff-badge');
         tariffBadge.innerText = `Tarifa Atual: R$ ${currentPrice}/kWh`;
-        if(currentPower > 22) {
+        if(currentPower > 20) {
             tariffBadge.className = "text-[10px] bg-orange-900/50 px-2 py-1 rounded text-orange-300 border border-orange-500/50 animate-pulse";
         } else {
             tariffBadge.className = "text-[10px] bg-green-900 px-2 py-1 rounded text-green-300 border border-green-700";
@@ -248,15 +248,15 @@ function startChargingSimulation() {
         let instantCost = instantKwh * currentPrice;
         totalCost += instantCost;
 
-        if (currentPower === 22) {
+        if (currentPower === 20) {
             costAccumulated22 += instantCost;
             timeSpent22 += SIMULATED_SECONDS_PER_TICK;
         }
-        else if (currentPower === 33) {
+        else if (currentPower === 40) {
             costAccumulated33 += instantCost;
             timeSpent33 += SIMULATED_SECONDS_PER_TICK;
         }
-        else if (currentPower === 66) {
+        else if (currentPower === 60) {
             costAccumulated66 += instantCost;
             timeSpent66 += SIMULATED_SECONDS_PER_TICK;
         }
@@ -415,5 +415,6 @@ function startStandardClock() {
         updateClockDisplay(new Date());
     }, 1000);
 }
+
 
 startStandardClock();
