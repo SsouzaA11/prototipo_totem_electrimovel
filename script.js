@@ -200,38 +200,38 @@ function startChargingSimulation() {
 
         let freeNeighbors = (!networkState.st2.active ? 1 : 0) + (!networkState.st3.active ? 1 : 0);
         
-        let currentPower = 20; 
+        let currentPower = 22; 
         let currentPrice = PRICE_22; 
 
         if (selectedSpeedMode === 'eco') {
-            currentPower = 20;
+            currentPower = 22;
             currentPrice = PRICE_22;
         } 
         else if (selectedSpeedMode === 'standard') {
             if (freeNeighbors >= 1) {
-                currentPower = 40;
+                currentPower = 33;
                 currentPrice = PRICE_33;
             } else {
-                currentPower = 20;
+                currentPower = 22;
                 currentPrice = PRICE_22;
             }
         }
         else if (selectedSpeedMode === 'ultra') {
             if (freeNeighbors >= 2) {
-                currentPower = 60;
+                currentPower = 66;
                 currentPrice = PRICE_66;
             } else if (freeNeighbors === 1) {
-                currentPower = 40;
+                currentPower = 33;
                 currentPrice = PRICE_33;
             } else {
-                currentPower = 20;
+                currentPower = 22;
                 currentPrice = PRICE_22;
             }
         }
 
         const tariffBadge = document.getElementById('tariff-badge');
         tariffBadge.innerText = `Tarifa Atual: R$ ${currentPrice}/kWh`;
-        if(currentPower > 20) {
+        if(currentPower > 22) {
             tariffBadge.className = "text-[10px] bg-orange-900/50 px-2 py-1 rounded text-orange-300 border border-orange-500/50 animate-pulse";
         } else {
             tariffBadge.className = "text-[10px] bg-green-900 px-2 py-1 rounded text-green-300 border border-green-700";
@@ -248,15 +248,15 @@ function startChargingSimulation() {
         let instantCost = instantKwh * currentPrice;
         totalCost += instantCost;
 
-        if (currentPower === 20) {
+        if (currentPower === 22) {
             costAccumulated22 += instantCost;
             timeSpent22 += SIMULATED_SECONDS_PER_TICK;
         }
-        else if (currentPower === 40) {
+        else if (currentPower === 33) {
             costAccumulated33 += instantCost;
             timeSpent33 += SIMULATED_SECONDS_PER_TICK;
         }
-        else if (currentPower === 60) {
+        else if (currentPower === 66) {
             costAccumulated66 += instantCost;
             timeSpent66 += SIMULATED_SECONDS_PER_TICK;
         }
@@ -418,3 +418,4 @@ function startStandardClock() {
 
 
 startStandardClock();
+
